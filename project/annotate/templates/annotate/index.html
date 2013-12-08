@@ -30,6 +30,7 @@
 {% endblock %}
 
 {% block extra_js %}
+        <script src="https://raw.github.com/jackmoore/autosize/master/jquery.autosize.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#new_line_button").click(function() {
@@ -53,11 +54,13 @@
                 var i = $("<textarea></textarea>").val(h);
                 $(this).append(i);
                 i.focus();
+                i.autosize();
             });
 
             $("ul.sections").on("blur", "li textarea", function() {
                 var h = $(this).val();
                 var p = $(this).parent();
+                $(this).trigger('autosize.destroy');
                 $(this).remove();
                 p.text(h);
             });
