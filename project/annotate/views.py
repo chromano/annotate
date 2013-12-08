@@ -83,7 +83,7 @@ def edit(request, doc_hash):
            'doc': doc
         }
     return render_to_response(
-        "annotate/index.html", RequestContext(request, ctx))
+        "annotate/edit.html", RequestContext(request, ctx))
 
 def list(request):
     docs = AnnotatedDoc.objects.all()

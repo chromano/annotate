@@ -2,116 +2,9 @@
 
 {% block extra_css %}
     <link href="http://backbonejs.org/docs/docco.css" rel="stylesheet">
-    <style>
-        #content {
-            display: block;
-        }
-
-        #content ul li {
-            float: left;
-            margin-right: 10px;
-        }
-
-        #content ul {
-            clear: both;
-        }
-
-        #new_line_button {
-          clear:both;
-          display:block;
-        }
-    </style>
-    <style>
-    /* These are overrides from the backbone file */
-    .pilcrow.remove-line {
-        left: -30px;-
-    }
-    </style>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="https://raw.github.com/jackmoore/autosize/master/jquery.autosize.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            add_new_section = function(annotation, content, position) {
-                var num_of_sections = $('li').length;
-
-                // Defaults
-                var annotation = typeof annotation !== 'undefined' ? annotation : "Insert reference text here";
-                var content = typeof content !== 'undefined' ? content : "Annotate here";
-                var position = typeof position !== 'undefined' ? position : num_of_sections;
-
-                var actions = ['<div class="pilwrap">',
-                               '<a class="pilcrow" href="#section-' + num_of_sections.toString() +'">&#182;</a>',
-                               '<a class="pilcrow remove-line" href="#">&times;</a>',
-                               '</div>'].join("");
-                var annotation = '<div class="annotation">' + actions + '<p class="text">' + annotation +  '</p></div>';
-                var content = '<div class="content"><div class="text">' + content + '</div></div>';
-                var newblock = '<li>' + annotation + content + '</li>';
-
-                $("ul#sections").append(newblock);
-            }
-
-            $("#new_line_button").click(function() {
-                add_new_section("foo", "bar");
-            });
-
-            $("ul#sections").on("click", "li div .text", function() {
-                if ($(this).find("textarea").length)
-                  return;
-                var h = $(this).text();
-                $(this).text("");
-                var i = $("<textarea></textarea>").val(h);
-                i.addClass("edit");
-                i.addClass("form-control");
-                $(this).append(i);
-                i.focus();
-                i.autosize();
-            });
-
-            $("ul#sections").on("blur", "li textarea.edit", function() {
-                var h = $(this).val();
-                var p = $(this).parent();
-                $(this).trigger('autosize.destroy');
-                $(this).remove();
-                p.text(h);
-            });
-
-            $("ul#sections").on("click", "li a.remove-line", function() {
-                $(this).parents("li").remove();
-            });
-
-            $("#save_button").click(function() {
-                var lines = [];
-                $("ul#sections li").each(function() {
-                    var c = $(this).find("div.content div.text").text();
-                    var a = $(this).find("div.annotation p.text").text();
-                    lines.push({"anot": a, "content": c});
-                });
-                $.post("{% url "post_annotateddoc" %}",
-                       {doc: JSON.stringify(lines), doc_hash: '{{ doc_hash }}'}, function(response) {
-                    if (!response.success) {
-                        alert("Oops, there was an error: " + response.error);
-                    } else {
-                        $("#output").html("Saved!");
-                    }
-                });
-            });
-
-            {% if doc_hash %}
-                var doc_hash = '{{ doc_hash }}';
-                $.get( "{% url 'get_annotateddoc' doc_hash %}", function(data) {
-                    // Note, not handling the failure case here. TODO
-                    var annotateddoc = data.text;
-                    annotateddoc.forEach(function(section) {
-                        var annotation = section.anot;
-                        var content = section.content;
-                        add_new_section(annotation, content);
-                    });
-                });
-            {% endif %}
-        });
-    </script>
 {% endblock %}
 
 {% block content %}
@@ -128,26 +21,10 @@
                         </ul>
                     </div>
                     <div class="content">
-                        <div class="text">This is the reference 0</div>
+                        <p></p>
                     </div>
                 </li>
             {% endif %}
         </ul>
     </div>
 {% endblock %}
-
-            <!-- sample section
-            <li id="section-1">
-                <div class="annotation">
-                    <div class="pilwrap">
-                        <a class="pilcrow" href="#section-6">&#182;</a>
-                        <a class="pilcrow remove-line" href="#">&times;</a>
-                    </div>
-                    <p class="text">This is the annotation 0</p>
-                </div>
-                <div class="content">
-                    <div class="text">This is the reference 0</div>
-                </div>
-            </li>
-            -->
-
