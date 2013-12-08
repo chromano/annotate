@@ -96,16 +96,18 @@
                 });
             });
 
-            var doc_hash = '{{ doc_hash }}';
-            $.get( "{% url 'get_annotateddoc' doc_hash %}", function(data) {
-                // Note, not handling the failure case here. TODO
-                var annotateddoc = data.text;
-                annotateddoc.forEach(function(section) {
-                    var annotation = section.anot;
-                    var content = section.content;
-                    add_new_section(annotation, content);
+            {% if doc_hash %}
+                var doc_hash = '{{ doc_hash }}';
+                $.get( "{% url 'get_annotateddoc' doc_hash %}", function(data) {
+                    // Note, not handling the failure case here. TODO
+                    var annotateddoc = data.text;
+                    annotateddoc.forEach(function(section) {
+                        var annotation = section.anot;
+                        var content = section.content;
+                        add_new_section(annotation, content);
+                    });
                 });
-            });
+            {% endif %}
         });
     </script>
 {% endblock %}

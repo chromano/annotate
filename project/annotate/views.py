@@ -49,8 +49,10 @@ def post(request):
                 doc.text = text
             except AnnotatedDoc.DoesNotExist:
                 doc = AnnotatedDoc(text=text)
+            except ValidationError:
+                doc = AnnotatedDoc(text=text)
             except Exception, e:
-                raise Exception, "UH OH"
+                raise Exception, "UH OH: %s" % e
             finally:
                 doc.save()
             response = {"success": True, "doc": str(doc.id)}
