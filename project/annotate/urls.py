@@ -4,4 +4,5 @@ urlpatterns = patterns('annotate.views',
     url(r'^$', 'index'),
     url(r'^post/$', 'post', name='post_annotateddoc'),
     url(r'^get/$', 'get', name='get_annotateddoc'),
+    url(r'^list/$', 'list', name='list_annotateddocs'),
 )

@@ -39,3 +39,11 @@ def get(request):
         response = {"success": True, "text": doc.text}
     return HttpResponse(
         simplejson.dumps(response), content_type="application/json")
+
+def list(request):
+    docs = AnnotatedDoc.objects.all()
+    ctx = {
+        "docs" : docs
+        }
+    return render_to_response(
+        "annotate/list.html", RequestContext(request, ctx))
