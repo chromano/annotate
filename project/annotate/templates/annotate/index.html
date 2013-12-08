@@ -67,14 +67,20 @@
             });
 
             $("#save_button").click(function() {
-                console.log("save button");
                 var lines = [];
                 $("ul.sections li").each(function() {
                     var c = $(this).find("div.content").text();
                     var a = $(this).find("div.annotation").text();
                     lines.push({"anot": a, "content": c});
                 });
-                $("#output").text(JSON.stringify(lines));
+                $.post("{% url "post_annotateddoc" %}",
+                       {doc: JSON.stringify(lines)}, function(response) {
+                    if (!response.success) {
+                        alert("Oops, there was an error: " + response.error);
+                    } else {
+                        $("#output").html("Saved!");
+                    }
+                });
             });
         });
     </script>
