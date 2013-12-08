@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
@@ -6,11 +7,31 @@ from django.views.decorators.csrf import csrf_exempt
 from mongoengine import ValidationError
 
 from annotate.models import AnnotatedDoc
+from annotate.forms import AnnotatedDocumentCreationForm
 
 def index(request):
     ctx = {}
     return render_to_response(
         "annotate/index.html", RequestContext(request, ctx))
+
+def new(request):
+    form_class = AnnotatedDocumentCreationForm
+    form = form_class()
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data["content"]
+            content = content.split("\r\n\r\n")
+            text = [{'anot':segment, 'content':"Annotate me"} for segment in content]
+            doc = AnnotatedDoc(text=text)
+            doc.save()
+            return HttpResponseRedirect(reverse("edit_annotateddoc", args=[doc.id]))
+
+    ctx = {
+        'form': form
+    }
+    return render_to_response(
+        "annotate/new.html", RequestContext(request, ctx))
 
 @csrf_exempt # FIXME: to be removed soon
 def post(request):
