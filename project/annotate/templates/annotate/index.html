@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var last_doc = null;
+            $("button#save").click(function() {
+                $.post("{% url "post_annotateddoc" %}", {doc: "[{\"foo\": \"bar\"}]"}, function(response) {
+                    alert(JSON.stringify(response));
+                    last_doc = response.doc;
+                });
+            });
+
+            $("button#load").click(function() {
+                $.get("{% url "get_annotateddoc" %}?doc=" + last_doc, function(response) {
+                    alert(JSON.stringify(response));
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    Here it comes
+    <button id="save">Click to save</button>
+    <button id="load">Click to load</button>
+{% endblock %}
+
