@@ -24,7 +24,7 @@ def new(request):
             title = form.cleaned_data['title']
             content = content.split("\r\n\r\n")
             text = [{'anot':segment, 'content':''} for segment in content]
-            text[0].update({'content': 'Annotate any paragraph by clicking the pen icon to the right of the reference text.'})
+            text[0].update({'content': 'Annotate any paragraph by clicking the pencil\n icon to the right of the reference text.'})
             doc = AnnotatedDoc(text=text, title=title)
             doc.save()
             return HttpResponseRedirect(reverse("edit_annotateddoc", args=[doc.id]))
