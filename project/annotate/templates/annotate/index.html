@@ -115,34 +115,25 @@
 {% block content %}
     <pre id="output"></pre>
     <div id="container">
-        <div id="background"></div>
-        <ul class="sections">
-            <li id="title">
-                <div class="annotation">
-                    <h1>Annotation App</h1>
-                </div>
-                <div class="content">
-                    <button id="new_line_button">Add line</button>
-                    <button id="save_button">Save</button>
-                </div>
-            </li>
-
-        </ul>
+        {% include "annotate/_top.html" %}
         <ul id="sections" class="sections">
             {% if not doc_hash %}
                 <li>
                     <div class="annotation">
-                    <ul>
-                        <li><a href="/new/">Create a new document</a></li>
-                        <li><a href="/list/">List of all available documents</a></li>
-
-                    </ul>
+                        <ul>
+                            <li><a href="/new/">Create a new document</a></li>
+                            <li><a href="/list/">List of all available documents</a></li>
+                        </ul>
                     </div>
                     <div class="content">
                         <div class="text">This is the reference 0</div>
                     </div>
                 </li>
             {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+
             <!-- sample section
             <li id="section-1">
                 <div class="annotation">
@@ -157,7 +148,4 @@
                 </div>
             </li>
             -->
-        </ul>
-    </div>
-{% endblock %}
 
