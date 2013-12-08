@@ -60,6 +60,7 @@
                 if ($(this).find("textarea").length)
                   return;
                 var h = $(this).text();
+                $(this).addClass("editing");
                 $(this).text("");
                 var i = $("<textarea></textarea>").val(h);
                 i.addClass("edit");
@@ -72,6 +73,7 @@
             $("ul#sections").on("blur", "li textarea.edit", function() {
                 var h = $(this).val();
                 var p = $(this).parent();
+                p.removeClass("editing");
                 $(this).trigger('autosize.destroy');
                 $(this).remove();
                 p.text(h);
