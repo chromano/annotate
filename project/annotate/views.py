@@ -19,11 +19,19 @@ def post(request):
     else:
         try:
             text = simplejson.loads(request.POST["doc"])
+            doc_hash = request.POST.get("doc_hash")
         except ValueError:
             response = {"error": "Invalid document"}
         else:
-            doc = AnnotatedDoc(text=text)
-            doc.save()
+            try:
+                doc = AnnotatedDoc.objects.get(id=doc_hash)
+                doc.text = text
+            except AnnotatedDoc.DoesNotExist:
+                doc = AnnotatedDoc(text=text)
+            except Exception, e:
+                raise Exception, "UH OH"
+            finally:
+                doc.save()
             response = {"success": True, "doc": str(doc.id)}
     return HttpResponse(
         simplejson.dumps(response), content_type="application/json")
@@ -37,8 +45,14 @@ def get(request, doc_hash):
         response = {"error": "Does not exist"}
     else:
         response = {"success": True, "text": doc.text}
+
     return HttpResponse(
         simplejson.dumps(response), content_type="application/json")
+
+def edit(request, doc_hash):
+    ctx = {'doc_hash': doc_hash}
+    return render_to_response(
+        "annotate/index.html", RequestContext(request, ctx))
 
 def list(request):
     docs = AnnotatedDoc.objects.all()

@@ -33,7 +33,7 @@
     <script src="https://raw.github.com/jackmoore/autosize/master/jquery.autosize.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            var add_new_section = function(annotation, content, position) {
+            add_new_section = function(annotation, content, position) {
                 var num_of_sections = $('li').length;
 
                 // Defaults
@@ -87,12 +87,23 @@
                     lines.push({"anot": a, "content": c});
                 });
                 $.post("{% url "post_annotateddoc" %}",
-                       {doc: JSON.stringify(lines)}, function(response) {
+                       {doc: JSON.stringify(lines), doc_hash: '{{ doc_hash }}'}, function(response) {
                     if (!response.success) {
                         alert("Oops, there was an error: " + response.error);
                     } else {
                         $("#output").html("Saved!");
                     }
+                });
+            });
+
+            var doc_hash = '{{ doc_hash }}';
+            $.get( "{% url 'get_annotateddoc' doc_hash %}", function(data) {
+                // Note, not handling the failure case here. TODO
+                var annotateddoc = data.text;
+                annotateddoc.forEach(function(section) {
+                    var annotation = section.anot;
+                    var content = section.content;
+                    add_new_section(annotation, content);
                 });
             });
         });
@@ -116,6 +127,7 @@
 
         </ul>
         <ul id="sections" class="sections">
+            <!-- sample section
             <li id="section-1">
                 <div class="annotation">
                     <div class="pilwrap">
@@ -128,6 +140,7 @@
                     <div class="text">This is the reference 0</div>
                 </div>
             </li>
+            -->
         </ul>
     </div>
 {% endblock %}

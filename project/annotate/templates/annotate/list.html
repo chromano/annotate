@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Documents</h1>
     {% for doc in docs %}
-        <li><strong><a href="{% url 'get_annotateddoc' doc.id %}">{{ doc.id }}</a></strong> {{ doc.text }}</li>
+        <li><strong><a href="{% url 'edit_annotateddoc' doc.id %}">{{ doc.id }}</a></strong> {{ doc.text }}</li>
     {% endfor %}
 {% endblock %}
 
