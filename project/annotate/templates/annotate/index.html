@@ -30,20 +30,30 @@
 {% endblock %}
 
 {% block extra_js %}
-        <script src="https://raw.github.com/jackmoore/autosize/master/jquery.autosize.js"></script>
+    <script src="https://raw.github.com/jackmoore/autosize/master/jquery.autosize.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#new_line_button").click(function() {
+            var add_new_section = function(annotation, content, position) {
                 var num_of_sections = $('li').length;
+
+                // Defaults
+                var annotation = typeof annotation !== 'undefined' ? annotation : "Insert reference text here";
+                var content = typeof content !== 'undefined' ? content : "Annotate here";
+                var position = typeof position !== 'undefined' ? position : num_of_sections;
+
                 var actions = ['<div class="pilwrap">',
                                '<a class="pilcrow" href="#section-' + num_of_sections.toString() +'">&#182;</a>',
                                '<a class="pilcrow remove-line" href="#">&times;</a>',
                                '</div>'].join("");
-                var annotation = '<div class="annotation">' + actions + '<p class="text">Annotation</p></div>';
-                var content = '<div class="content"><div class="text">Reference</div></div>';
+                var annotation = '<div class="annotation">' + actions + '<p class="text">' + annotation +  '</p></div>';
+                var content = '<div class="content"><div class="text">' + content + '</div></div>';
                 var newblock = '<li>' + annotation + content + '</li>';
 
                 $("ul#sections").append(newblock);
+            }
+
+            $("#new_line_button").click(function() {
+                add_new_section("foo", "bar");
             });
 
             $("ul#sections").on("click", "li div .text", function() {
