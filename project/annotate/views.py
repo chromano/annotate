@@ -81,7 +81,8 @@ def edit(request, doc_hash):
         raise Http404
 
     ctx = {'doc_hash': doc_hash,
-           'doc': doc
+           'doc': doc,
+           'editable': True,
         }
     return render_to_response(
         "annotate/edit.html", RequestContext(request, ctx))

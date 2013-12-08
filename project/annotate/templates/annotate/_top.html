@@ -3,7 +3,7 @@
             <li id="title">
                 <div class="annotation">
                     <h1>{% if doc.title %}{{ doc.title  }}{% else %}Annotation App{% endif %}
-                        <button class="btn" id="save_button">Save</button>
+                        {% if editable %}<button class="btn" id="save_button">Save</button>{% endif %}
                     </h1>
                 </div>
                 <div class="content">

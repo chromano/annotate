@@ -54,9 +54,11 @@
                 $("ul#sections").append(newblock);
             }
 
-            $("#new_line_button").click(function() {
-                add_new_section("foo", "bar");
-            });
+            // $("#new_line_button").click(function() {
+            //     add_new_section("foo", "bar");
+            // });
+
+        {% if editable %}{# none of these functions are needed except if editable #}
 
             $("ul#sections").on("click", "li div .text", function() {
                 if ($(this).find("textarea").length)
@@ -101,6 +103,7 @@
                     }
                 });
             });
+        {% endif %}{# /editable #}
 
             {% if doc_hash %}
                 var doc_hash = '{{ doc_hash }}';
