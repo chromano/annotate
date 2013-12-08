@@ -1,0 +1,13 @@
+{% for field in form %}
+    <div class="form-group {% if field.errors %}error{% endif %}">
+        <label class="control-label" for="{{ field.id }}">{{ field.label }}</label>
+        <div class="controls">
+            {{ field }}
+            {% if field.errors %}<span class="help-inline">{{ field.errors }}</span>{% endif %}
+            {% if field.help_text %}<p class="quiet smaller">{{ field.help_text|safe }}</p>{% endif %}
+        </div>
+    </div>
+{% endfor %}
+<div class="form-actions">
+    <button type="submit" class="btn btn-primary">{% firstof buttontext "Submit" %}</button>
+</div>
