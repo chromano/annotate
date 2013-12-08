@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+Enter the text you want to annotate.
+
+Currently ignoring the title and slug. Just put it there because it seems like a good idea for the future.
 <form method="post" class="form-horizontal">{% csrf_token %}
     {{ form }}
     <button type="submit" class="btn btn-primary">Save</button>

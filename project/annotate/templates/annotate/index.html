@@ -129,6 +129,20 @@
 
         </ul>
         <ul id="sections" class="sections">
+            {% if not doc_hash %}
+                <li>
+                    <div class="annotation">
+                    <ul>
+                        <li><a href="/new/">Create a new document</a></li>
+                        <li><a href="/list/">List of all available documents</a></li>
+
+                    </ul>
+                    </div>
+                    <div class="content">
+                        <div class="text">This is the reference 0</div>
+                    </div>
+                </li>
+            {% endif %}
             <!-- sample section
             <li id="section-1">
                 <div class="annotation">
