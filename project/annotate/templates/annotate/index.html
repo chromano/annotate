@@ -43,10 +43,10 @@
                 var content = '<div class="content"><div class="text">Reference</div></div>';
                 var newblock = '<li>' + annotation + content + '</li>';
 
-                $("ul.sections").append(newblock);
+                $("ul#sections").append(newblock);
             });
 
-            $("ul.sections").on("click", "li div .text", function() {
+            $("ul#sections").on("click", "li div .text", function() {
                 if ($(this).find("textarea").length)
                   return;
                 var h = $(this).text();
@@ -57,7 +57,7 @@
                 i.autosize();
             });
 
-            $("ul.sections").on("blur", "li textarea", function() {
+            $("ul#sections").on("blur", "li textarea", function() {
                 var h = $(this).val();
                 var p = $(this).parent();
                 $(this).trigger('autosize.destroy');
@@ -65,19 +65,25 @@
                 p.text(h);
             });
 
-            $("ul.sections").on("click", "li a.remove-line", function() {
+            $("ul#sections").on("click", "li a.remove-line", function() {
                 $(this).parents("li").remove();
             });
 
             $("#save_button").click(function() {
-                console.log("save button");
                 var lines = [];
-                $("ul.sections li").each(function() {
-                    var c = $(this).find("div.content").text();
-                    var a = $(this).find("div.annotation").text();
+                $("ul#sections li").each(function() {
+                    var c = $(this).find("div.content div.text").text();
+                    var a = $(this).find("div.annotation p.text").text();
                     lines.push({"anot": a, "content": c});
                 });
-                $("#output").text(JSON.stringify(lines));
+                $.post("{% url "post_annotateddoc" %}",
+                       {doc: JSON.stringify(lines)}, function(response) {
+                    if (!response.success) {
+                        alert("Oops, there was an error: " + response.error);
+                    } else {
+                        $("#output").html("Saved!");
+                    }
+                });
             });
         });
     </script>
@@ -97,6 +103,9 @@
                     <button id="save_button">Save</button>
                 </div>
             </li>
+
+        </ul>
+        <ul id="sections" class="sections">
             <li id="section-1">
                 <div class="annotation">
                     <div class="pilwrap">
