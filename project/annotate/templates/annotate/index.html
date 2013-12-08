@@ -1,28 +1,112 @@
 {% extends "base.html" %}
 
+{% block extra_css %}
+    <link href="http://backbonejs.org/docs/docco.css" rel="stylesheet">
+    <style>
+        #content {
+            display: block;
+        }
+
+        #content ul li {
+            float: left;
+            margin-right: 10px;
+        }
+
+        #content ul {
+            clear: both;
+        }
+
+        #new_line_button {
+          clear:both;
+          display:block;
+        }
+    </style>
+    <style>
+    /* These are overrides from the backbone file */
+    .pilcrow.remove-line {
+        left: -30px;-
+    }
+    </style>
+{% endblock %}
+
 {% block extra_js %}
     <script type="text/javascript">
         $(document).ready(function() {
-            var last_doc = null;
-            $("button#save").click(function() {
-                $.post("{% url "post_annotateddoc" %}", {doc: "[{\"foo\": \"bar\"}]"}, function(response) {
-                    alert(JSON.stringify(response));
-                    last_doc = response.doc;
-                });
+            $("#new_line_button").click(function() {
+                var num_of_sections = $('li').length;
+                var actions = ['<div class="pilwrap">',
+                               '<a class="pilcrow" href="#section-' + num_of_sections.toString() +'">&#182;</a>',
+                               '<a class="pilcrow remove-line" href="#">&times;</a>',
+                               '</div>'].join("");
+                var annotation = '<div class="annotation">' + actions + '<p class="text">Annotation</p></div>';
+                var content = '<div class="content"><div class="text">Reference</div></div>';
+                var newblock = '<li>' + annotation + content + '</li>';
+
+                $("ul.sections").append(newblock);
             });
 
-            $("button#load").click(function() {
-                $.get("{% url "get_annotateddoc" %}?doc=" + last_doc, function(response) {
-                    alert(JSON.stringify(response));
+            $("ul.sections").on("click", "li div .text", function() {
+                if ($(this).find("textarea").length)
+                  return;
+                var h = $(this).text();
+                $(this).text("");
+                var i = $("<textarea></textarea>").val(h);
+                $(this).append(i);
+                i.focus();
+            });
+
+            $("ul.sections").on("blur", "li textarea", function() {
+                var h = $(this).val();
+                var p = $(this).parent();
+                $(this).remove();
+                p.text(h);
+            });
+
+            $("ul.sections").on("click", "li a.remove-line", function() {
+                $(this).parents("li").remove();
+            });
+
+            $("#save_button").click(function() {
+                console.log("save button");
+                var lines = [];
+                $("ul.sections li").each(function() {
+                    var c = $(this).find("div.content").text();
+                    var a = $(this).find("div.annotation").text();
+                    lines.push({"anot": a, "content": c});
                 });
+                $("#output").text(JSON.stringify(lines));
             });
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    Here it comes
-    <button id="save">Click to save</button>
-    <button id="load">Click to load</button>
+    <pre id="output"></pre>
+    <div id="container">
+        <div id="background"></div>
+        <ul class="sections">
+            <li id="title">
+                <div class="annotation">
+                    <h1>Annotation App</h1>
+                </div>
+                <div class="content">
+                    <button id="new_line_button">Add line</button>
+                    <button id="save_button">Save</button>
+                </div>
+            </li>
+            <li id="section-1">
+                <div class="annotation">
+                    <div class="pilwrap">
+                        <a class="pilcrow" href="#section-6">&#182;</a>
+                        <a class="pilcrow remove-line" href="#">&times;</a>
+                    </div>
+                    <p class="text">This is the annotation 0</p>
+                </div>
+                <div class="content">
+                    <div class="text">This is the reference 0</div>
+                </div>
+            </li>
+        </ul>
+    </div>
 {% endblock %}
 
