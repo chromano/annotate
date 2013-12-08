@@ -28,11 +28,11 @@ def post(request):
     return HttpResponse(
         simplejson.dumps(response), content_type="application/json")
 
-def get(request):
-    if not request.GET or not "doc" in request.GET:
+def get(request, doc_hash):
+    if not request.GET or not doc_hash:
         response = {"error": "Invalid request"}
     try:
-        doc = AnnotatedDoc.objects.get(id=request.GET["doc"])
+        doc = AnnotatedDoc.objects.get(id=doc_hash)
     except (ValidationError, AnnotatedDoc.DoesNotExist):
         response = {"error": "Does not exist"}
     else:
