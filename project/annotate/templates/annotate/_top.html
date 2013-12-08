@@ -2,11 +2,34 @@
         <ul class="sections">
             <li id="title">
                 <div class="annotation">
-                    <h1>Annotation App</h1>
+                    <h1>Annotation App
+                        <button class="btn" id="save_button">Save</button>
+                    </h1>
                 </div>
                 <div class="content">
+                    <div>
+                        Annotation App:
+                        Make Notes On Any Text Document
+                    </div>
+                    <style>
+                        ul.navigation {
+                          list-style:none;
+                          padding-left: 0;
+                        }
+                        ul.navigation li {
+                          display: inline-block;
+                          padding-right: 10px;
+                        }
+                    </style>
+                    <div>
+                        <ul class="navigation">
+                            <li><a href="">About</a></li>
+                            <li><a href="">Examples</a></li>
+                            <li><a href="">List</a></li>
+                            <li><a href="">Create A New Document</a></li>
+                        </ul>
+                    </div>
                     <button id="new_line_button" style="display:none;">Add line</button>
-                    <button id="save_button">Save</button>
                 </div>
             </li>
         </ul>

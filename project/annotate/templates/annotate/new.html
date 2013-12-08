@@ -8,9 +8,12 @@
             <li>
                 <div class="annotation">
 
+                    <p>
                     Enter the text you want to annotate.
 
                     Currently ignoring the title and slug. Just put it there because it seems like a good idea for the future.
+                    </p>
+
                     <form method="post">{% csrf_token %}
                         {% include "form.html" with buttontext="Annotate This Text!" %}
                     </form>
