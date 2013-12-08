@@ -2,7 +2,7 @@
         <ul class="sections">
             <li id="title">
                 <div class="annotation">
-                    <h1>Annotation App
+                    <h1>{% if doc %}{{ doc.title  }}{% else %}Annotation App{% endif %}
                         <button class="btn" id="save_button">Save</button>
                     </h1>
                 </div>

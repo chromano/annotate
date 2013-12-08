@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -21,9 +21,10 @@ def new(request):
         form = form_class(request.POST)
         if form.is_valid():
             content = form.cleaned_data["content"]
+            title = form.cleaned_data['title']
             content = content.split("\r\n\r\n")
             text = [{'anot':segment, 'content':"Annotate me"} for segment in content]
-            doc = AnnotatedDoc(text=text)
+            doc = AnnotatedDoc(text=text, title=title)
             doc.save()
             return HttpResponseRedirect(reverse("edit_annotateddoc", args=[doc.id]))
 
@@ -73,7 +74,14 @@ def get(request, doc_hash):
         simplejson.dumps(response), content_type="application/json")
 
 def edit(request, doc_hash):
-    ctx = {'doc_hash': doc_hash}
+    try:
+        doc = AnnotatedDoc.objects.get(id=doc_hash)
+    except (ValidationError, AnnotatedDoc.DoesNotExist):
+        raise Http404
+
+    ctx = {'doc_hash': doc_hash,
+           'doc': doc
+        }
     return render_to_response(
         "annotate/index.html", RequestContext(request, ctx))
 
