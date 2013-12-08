@@ -62,12 +62,13 @@
                 var h = $(this).text();
                 $(this).text("");
                 var i = $("<textarea></textarea>").val(h);
+                i.addClass("edit");
                 $(this).append(i);
                 i.focus();
                 i.autosize();
             });
 
-            $("ul#sections").on("blur", "li textarea", function() {
+            $("ul#sections").on("blur", "li textarea.edit", function() {
                 var h = $(this).val();
                 var p = $(this).parent();
                 $(this).trigger('autosize.destroy');
