@@ -2,3 +2,6 @@ Django==1.6
 mongoengine==0.8.6
 pymongo==2.6.3
 wsgiref==0.1.2
+django-extensions==1.1.1
+ipython==1.1.0
+Werkzeug==0.9.4
