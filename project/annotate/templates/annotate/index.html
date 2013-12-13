@@ -41,7 +41,7 @@
                         <p><a class="btn btn-default quiet" href="http://backbonejs.org/docs/backbone.html">View An Example of Code Commenting</a></p>
                     </div>
                     <div class="content">
-                        <p class="strong">Really, it's great!</p>
+                        <p style="font-size:1.3em;" class="strong">Seriously, it's awesome!</p>
                         <ul>
                             <li>No Sign Up Required.</li>
                             <li>100% Fat Free.</li>
@@ -49,7 +49,7 @@
                         </ul>
                         <br>
                         <p class="text-center">
-                            <a href="{% url 'new_annotateddoc' %}" class="btn btn-success btn-lg strong">Try Annotating A Document Now</a>
+                            <a href="{% url 'edit_annotateddoc' doc_hash='52ab6839bdb76a00070d71ac' %}" class="btn btn-success btn-lg strong">Try Annotating A Document Now</a>
                         </p>
                         <p style="display:none">
                             Children's books are great because they provide a lot of repetition,
@@ -70,7 +70,7 @@
                             learn Japanese and we've been going through short children's
                             fictional stories.
                         </p>
-                        <p><a class="btn btn-default quiet" href="">View An Example of Translation Notes</a></p>
+                        <p><a class="btn btn-default quiet" href="{% url 'view_annotateddoc' doc_hash='52ab69b9bdb76a00070d71ad' %}">View An Example of Translation Notes</a></p>
                     </div>
                     <div class="content">
                         <p style="display:none">
