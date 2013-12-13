@@ -48,7 +48,7 @@
                                '<a class="pilcrow remove-line" href="#">&times;</a>',
                                '</div>'].join("");
                 var annotation = '<div class="annotation">' + actions + '<p class="text">' + annotation +  '</p></div>';
-                var content = '<div class="content"><div class="text">' + content + '</div></div>';
+                var content = '<div class="content"><div class="text{% if editable %} editable{% endif %}">' + content + '</div></div>';
                 var newblock = '<li>' + annotation + content + '</li>';
 
                 $("ul#sections").append(newblock);

@@ -75,6 +75,9 @@ def get(request, doc_hash):
         simplejson.dumps(response), content_type="application/json")
 
 def edit(request, doc_hash):
+    return view(request, doc_hash, editable=True)
+
+def view(request, doc_hash, editable=False):
     try:
         doc = AnnotatedDoc.objects.get(id=doc_hash)
     except (ValidationError, AnnotatedDoc.DoesNotExist):
@@ -82,10 +85,10 @@ def edit(request, doc_hash):
 
     ctx = {'doc_hash': doc_hash,
            'doc': doc,
-           'editable': True,
+           'editable': editable,
         }
     return render_to_response(
-        "annotate/edit.html", RequestContext(request, ctx))
+        "annotate/view.html", RequestContext(request, ctx))
 
 def list(request):
     docs = AnnotatedDoc.objects.all()
