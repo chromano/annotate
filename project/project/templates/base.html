@@ -56,9 +56,11 @@
         }
         .text {
             white-space: pre-wrap;
-            max-width: 450px;
         }
-        .content div.text:before {
+        .content .text {
+            width: 450px;
+        }
+        .content div.text.editable:before {
             content: "\f040";
             font-family: FontAwesome;
 
@@ -67,7 +69,10 @@
 
             /* more styling for the icon, including color, font-size, positioning, etc. */
         }
-        .content div.text.editing:before {
+        .content div.text.editable:hover:before {
+            color: red;
+        }
+        .content div.text.editable.editing:before {
             content: "";
         }
     </style>
